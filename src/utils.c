@@ -1,11 +1,11 @@
 #include "../philo.h"
 
-void	starting_vars(char *argv[], t_map *start_map)
+void	starting_vars(char *argv[], t_env *start_map)
 {
 	struct timeval tv;
 	unsigned long long time;
 
-	start_map->number_of_philos = ft_atoi(argv[1]);
+	start_map->nbr_philos = ft_atoi(argv[1]);
 	start_map->time_to_die =  ft_atoi(argv[2]);
 	start_map->time_to_eat = ft_atoi(argv[3]);
 	start_map->time_to_sleep = ft_atoi(argv[4]);
