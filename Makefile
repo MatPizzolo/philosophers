@@ -6,13 +6,13 @@ SRCS = $(SRCS_DIR)/main.c $(SRCS_DIR)/ft_atoi.c $(SRCS_DIR)/utils.c
 
 OBJS = $(SRCS:.c=.o)
 
-CC = gcc -g -pthread
+CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) 
 
 %.o: %.c 
 	$(CC) $(CFLAGS) -c $< -o $@
