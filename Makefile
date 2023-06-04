@@ -2,20 +2,22 @@ NAME = philo
 
 SRCS_DIR = ./src
 
-SRCS = $(SRCS_DIR)/main.c $(SRCS_DIR)/ft_atoi.c $(SRCS_DIR)/utils.c
+SRCS = $(SRCS_DIR)/main.c $(SRCS_DIR)/initialize.c $(SRCS_DIR)/utils.c $(SRCS_DIR)/ft_atoi.c $(SRCS_DIR)/dining.c
 
 OBJS = $(SRCS:.c=.o)
 
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CC = gcc -pthread
+CFLAGS = -Wall -Wextra #-Werror
+
+LDFLAGS = -g -fsanitize=thread
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) 
+	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME) 
 
 %.o: %.c 
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(LDFLAGS) $(CFLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OBJS)

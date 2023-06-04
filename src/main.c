@@ -5,67 +5,49 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/30 04:13:52 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/05/30 07:03:19 by mpizzolo         ###   ########.fr       */
+/*   Created: 2023/05/31 03:58:40 by mpizzolo          #+#    #+#             */
+/*   Updated: 2023/06/02 09:54:14 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-void	*routine(void *arg)
+int	start_dinner(t_env *env)
 {
-	t_philo	*philo;
+	int			i;
+	int			nbr_philos;
+	pthread_t	*philo_thread;
+	t_philo		*philo_struct;
 
-	philo = arg;
-	printf("rt started\n");
-	// pthread_mutex_lock(philo->msg_mutex);
-	printf("Routine del %i\n", philo->id);
-	pthread_mutex_lock(philo->fork_left);
-	print_ms_p(philo, "grabbed fork\n");
-	pthread_mutex_lock(philo->fork_right);
-	print_ms_p(philo, "grabbed fork\n");
-	pthread_mutex_unlock(philo->fork_left);
-	pthread_mutex_unlock(philo->fork_right);
-	// pthread_mutex_unlock(philo->msg_mutex);
-	return (arg);
-}
-
-int	starting_philos(t_env *v, int argc, char **argv)
-{
-	int		i;
-	int		nbr;
-
-	nbr = v->nbr_philos;
 	i = -1;
-	printf("starting philos\n\n");
-	pthread_mutex_lock(v->msg_mutex);
-	while (++i < nbr)
+	nbr_philos = env->nbr_philos;
+	pthread_mutex_lock(env->print_msg);
+	while (++i < nbr_philos)
 	{
-		if (!start_philo_vars(i, v, argc, argv))
-			return (0);
-		if (pthread_create(&(v->philos[i]), NULL,
-				routine, &(v->philo[i])) != 0)
-		{
-			printf("Failed to create philo thread\n");
-			return (0);
-		}
-		printf("thread created\n\n");
+		philo_thread = env->philos_threads + i;
+		philo_struct = env->philos_struct[i];
+		if (pthread_create(philo_thread, NULL, routine, philo_struct) != 0)
+			return (printf("Failed when creating a thread\n"), 0);
 	}
-	pthread_mutex_unlock(v->msg_mutex);
-	printf("msg unlock\n\n");
+	pthread_mutex_unlock(env->print_msg);
 	return (1);
 }
 
-int	main(int argc, char	*argv[])
+int	main(int argc, char *argv[])
 {
-	t_env	start_vars;
+	t_env	env;
 
-	if (argc != 5 && argc != 6)
-		return (printf("Invalid number of arguments"), 1);
-	if (!starting_vars(argv, &start_vars))
+	if (argc < 5 || argc > 6)
+		return (printf("Invalid number of arguments\n"), 0);
+	if (!vargs_to_env(&env, argv))
+		return (printf("Failed to get argv's\n"), 0);
+	if (!initialize_env_struct(&env))
+		return (printf("Failed to initialize env struct\n"), 0);
+	if (!initialize_philos_struct(&env))
+		return (printf("Failed to initialize philos struct\n"), 0);
+	if (!start_dinner(&env))
+		return (printf("Failed to start dinner\n"), 0);
+	if (!finish_dinner(&env))
 		return (0);
-	if (!starting_philos(&start_vars, argc, argv))
-		return (free(&start_vars), 0);
 	return (0);
 }
-
