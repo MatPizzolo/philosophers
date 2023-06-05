@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 03:58:40 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/02 09:54:14 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/05 09:35:02 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	main(int argc, char *argv[])
 		return (printf("Failed to initialize philos struct\n"), 0);
 	if (!start_dinner(&env))
 		return (printf("Failed to start dinner\n"), 0);
-	if (!finish_dinner(&env))
+	if (!finish_dinner(&env, argc))
 		return (0);
 	return (0);
 }

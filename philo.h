@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 03:57:52 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/02 08:03:05 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/05 09:35:10 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,10 @@ typedef struct philo
 	int				id;
 	int				times_eaten;
 	unsigned long	last_meal;
-	int				is_starved;
 	pthread_mutex_t	*fork_left;
 	pthread_mutex_t	*fork_right;
 	pthread_mutex_t	*print_msg;
 	pthread_mutex_t	*shield_mtx;
-	pthread_mutex_t	*finish_dinner_mtx;
 	t_env			*env;
 }	t_philo;
 
@@ -50,6 +48,7 @@ typedef struct env
 	unsigned long	start_time;
 	int				finish_dinner;
 	pthread_mutex_t	*finish_dinner_mtx;
+	int				someone_died;
 }	t_env;
 
 /* ft_atoi*/
@@ -65,8 +64,12 @@ void			ft_finish_threads(t_env *env);
 /* initialize */
 int				initialize_env_struct(t_env *env);
 int				initialize_philos_struct(t_env *env);
+
 /* dining.c */
 void			*routine(void *arg);
-int				finish_dinner(t_env *env);
+
+/* finish_dinner.c */
+int				is_starved(t_philo *philo);
+int				finish_dinner(t_env *env, int argc);
 
 #endif

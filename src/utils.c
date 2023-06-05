@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 03:59:40 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/02 10:03:30 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/05 10:03:18 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,7 @@
 
 void	ft_usleep(int time)
 {
-	unsigned long	start_time;
-	unsigned long	act_time;
-
-	start_time = ft_get_time();
-	act_time = start_time;
-	while (start_time >= (act_time - time))
-	{	
-		act_time = ft_get_time();
-		usleep(100);
-	}
+	usleep(time * 1000);
 }
 
 void	print_ms_p(t_philo *p, char *str)
@@ -42,8 +33,8 @@ unsigned long	ft_get_time(void)
 	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
-	time = (unsigned long long)tv.tv_sec * 1000
-		+ (unsigned long long)tv.tv_usec / 1000;
+	time = (unsigned long)tv.tv_sec * 1000
+		+ (unsigned long)tv.tv_usec / 1000;
 	return (time);
 }
 
@@ -53,13 +44,7 @@ void	ft_finish_threads(t_env *env)
 
 	i = -1;
 	while (++i < env->nbr_philos)
-	{
-		printf("destoying: %i\n", i);
-		if (pthread_join(env->philos_threads[i], NULL) == 0)
-			printf("t: %i, joined succesfully\n", i);
-		else
-			printf("t:%i, already terminated\n", i);
-	}
+		pthread_join(env->philos_threads[i], NULL);
 	i = -1;
 	while (++i < env->nbr_philos)
 	{	
