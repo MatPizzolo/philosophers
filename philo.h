@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 03:57:52 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/06 11:05:36 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/06 12:56:56 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ typedef struct philo
 	pthread_mutex_t	*fork_left;
 	pthread_mutex_t	*fork_right;
 	pthread_mutex_t	*print_msg;
-	pthread_mutex_t	*shield_mtx;
 	t_env			*env;
 }	t_philo;
 
@@ -44,11 +43,10 @@ typedef struct env
 	pthread_t		*philos_threads;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	*print_msg;
-	pthread_mutex_t	*shield_mtx;
 	unsigned long	start_time;
 	int				finish_dinner;
-	pthread_mutex_t	*finish_dinner_mtx;
 	int				someone_died;
+	int				can_print;
 }	t_env;
 
 /* ft_atoi*/
@@ -59,9 +57,10 @@ void			ft_usleep(int sleep);
 void			print_ms_p(t_philo *p, char *str);
 unsigned long	ft_get_time(void);
 int				is_starved(t_philo *philo);
-int				check_args(int argc, char *argv[]);
+void			print_ms_death(t_philo *p);
 
 /* initialize */
+int				check_args(int argc, char *argv[]);
 int				initialize_env_struct(t_env *env);
 int				initialize_philos_struct(t_env *env);
 int				vargs_to_env(t_env *env, char **argv);

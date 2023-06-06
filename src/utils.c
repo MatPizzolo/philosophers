@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 03:59:40 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/06 12:00:11 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/06 15:14:04 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,17 @@ int	is_starved(t_philo *philo)
 	unsigned long	diff_from_last_meal;
 
 	pthread_mutex_lock(philo->env->print_msg);
+	if (philo->env->can_print == 0)
+	{
+		pthread_mutex_unlock(philo->env->print_msg);
+		return (0);
+	}
 	diff_from_last_meal = ft_get_time() - philo->last_meal;
 	if (diff_from_last_meal > (unsigned long)philo->env->time_to_die)
 	{
-		if (philo->env->someone_died || philo->env->finish_dinner)
-		{
-			pthread_mutex_unlock(philo->env->print_msg);
-			return (0);
-		}
 		philo->env->someone_died = 1;
 		pthread_mutex_unlock(philo->env->print_msg);
-		print_ms_p(philo, "\033[1;33mDIED\033[0m");
+		print_ms_death(philo);
 		return (1);
 	}
 	pthread_mutex_unlock(philo->env->print_msg);
@@ -36,7 +36,25 @@ int	is_starved(t_philo *philo)
 
 void	ft_usleep(int time)
 {
-	usleep(time * 1000);
+	unsigned long	reference;
+	
+	reference = time + ft_get_time();
+	while (ft_get_time() < reference)
+		usleep(700);
+}
+
+void	print_ms_death(t_philo *p)
+{
+	unsigned long	time;
+
+	time = ft_get_time() - p->env->start_time;
+	pthread_mutex_lock(p->print_msg);
+	if (p->env->can_print)
+	{
+		printf("%lu - %i, ", time, p->id);
+		printf("\033[31;3m 💀 DIED 💀 \033[0m\n");
+	}
+	pthread_mutex_unlock(p->print_msg);
 }
 
 void	print_ms_p(t_philo *p, char *str)
@@ -45,7 +63,8 @@ void	print_ms_p(t_philo *p, char *str)
 
 	time = ft_get_time() - p->env->start_time;
 	pthread_mutex_lock(p->print_msg);
-	printf("%lu - %i, %s\n", time, p->id, str);
+	if (p->env->can_print)
+		printf("%lu - %i, %s\n", time, p->id, str);
 	pthread_mutex_unlock(p->print_msg);
 }
 
