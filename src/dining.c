@@ -6,35 +6,69 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 04:30:05 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/05 10:07:15 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/06 10:07:46 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-int	philo_ations(t_philo *philo)
+int	grabbing_forks_eating(t_philo *philo)
 {
 	pthread_mutex_lock(philo->fork_left);
 	print_ms_p(philo, "grabbed fork");
+	printf("helo f: %p - fl: %p\n", philo->fork_right, philo->fork_left);
 	if (philo->fork_left == philo->fork_right)
 		return (0);
 	pthread_mutex_lock(philo->fork_right);
 	print_ms_p(philo, "grabbed fork");
-	print_ms_p(philo, "is eating");
 	pthread_mutex_lock(philo->env->print_msg);
-	philo->last_meal = ft_get_time() - philo->env->start_time;
-	pthread_mutex_unlock(philo->env->print_msg);
-	if (is_starved(philo))
+	if (philo->env->someone_died || philo->env->finish_dinner)
+	{
+		pthread_mutex_unlock(philo->fork_right);
+		pthread_mutex_unlock(philo->fork_left);
+		pthread_mutex_unlock(philo->env->print_msg);
 		return (0);
-	pthread_mutex_lock(philo->env->print_msg);
+	}
 	philo->times_eaten++;
+	philo->last_meal = ft_get_time();
 	pthread_mutex_unlock(philo->env->print_msg);
+	print_ms_p(philo, "is eating");
 	ft_usleep(philo->env->time_to_eat);
 	pthread_mutex_unlock(philo->fork_right);
 	pthread_mutex_unlock(philo->fork_left);
+	return (1);
+}
+
+int	sleep_and_think(t_philo *philo)
+{
+	pthread_mutex_lock(philo->env->print_msg);
+	if (philo->env->someone_died || philo->env->finish_dinner)
+		return (0);
+	pthread_mutex_unlock(philo->env->print_msg);
 	print_ms_p(philo, "is sleeping");
 	ft_usleep(philo->env->time_to_sleep);
+	pthread_mutex_lock(philo->env->print_msg);
+	if (philo->env->someone_died || philo->env->finish_dinner)
+		return (0);
+	pthread_mutex_unlock(philo->env->print_msg);
 	print_ms_p(philo, "is thinking");
+	return (1);
+}
+
+int	philo_ations(t_philo *philo)
+{
+	pthread_mutex_lock(philo->env->print_msg);
+	if (philo->env->someone_died || philo->env->finish_dinner)
+		return (0);
+	pthread_mutex_unlock(philo->env->print_msg);
+	if (is_starved(philo))
+		return (0);
+	if (!grabbing_forks_eating(philo))
+		return (0);
+	if (is_starved(philo))
+		return (0);
+	if (!sleep_and_think(philo))
+		return (0);
 	return (1);
 }
 
@@ -44,7 +78,6 @@ void	*routine(void *arg)
 
 	philo = (t_philo *)arg;
 	pthread_mutex_lock(philo->print_msg);
-	// philo->last_meal = ft_get_time() - philo->env->start_time;
 	pthread_mutex_unlock(philo->print_msg);
 	if ((philo->id % 2) == 0)
 		usleep(200);

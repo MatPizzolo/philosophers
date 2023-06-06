@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 22:19:35 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/05 10:10:12 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/06 09:10:42 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	initialize_philos_struct(t_env *env)
 		philo->fork_right = &(env->forks[i]);
 		philo->shield_mtx = env->shield_mtx;
 		philo->env = env;
-		// philo->last_meal = ft_get_time() - philo->env->start_time;
+		philo->last_meal = philo->env->start_time;
 	}
 	return (1);
 }

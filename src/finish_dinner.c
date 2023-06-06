@@ -6,30 +6,11 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 06:21:53 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/05 10:06:17 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/06 09:33:17 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
-
-int	is_starved(t_philo *philo)
-{
-	unsigned long	diff_from_last_meal;
-
-	pthread_mutex_lock(philo->env->print_msg);
-	diff_from_last_meal = ft_get_time() - philo->last_meal;
-	// printf("dif %lu\n", diff_from_last_meal);
-	// usleep(20000);
-	if ((int)diff_from_last_meal > philo->env->time_to_die)
-	{
-		philo->env->someone_died = 1;
-		pthread_mutex_unlock(philo->env->print_msg);
-		print_ms_p(philo, "\033[1;33mDIED\033[0m");
-		return (1);
-	}
-	pthread_mutex_unlock(philo->env->print_msg);
-	return (0);
-}
 
 int	a_philo_is_starved(t_env *env)
 {
@@ -39,7 +20,7 @@ int	a_philo_is_starved(t_env *env)
 	while (++i < env->nbr_philos)
 	{
 		if (is_starved(env->philos_struct[i]))
-			return (1);	
+			return (1);
 	}
 	return (0);
 }
@@ -59,8 +40,8 @@ int	are_philos_full(t_env *env)
 		pthread_mutex_unlock(env->print_msg);
 		if (philos_full == env->nbr_philos)
 		{
-			if (is_starved(env->philos_struct[i]))
-				return (1);
+			// if (is_starved(env->philos_struct[i]))
+			// 	return (1);
 			pthread_mutex_lock(env->print_msg);
 			env->finish_dinner = 1;
 			pthread_mutex_unlock(env->print_msg);
@@ -83,8 +64,8 @@ int	finish_dinner(t_env *env, int argc)
 			if (are_philos_full(env))
 				x = 0;
 		}
-		if (a_philo_is_starved(env))
-			x = 0;
+		// if (a_philo_is_starved(env))
+		// 	x = 0;
 		pthread_mutex_lock(env->print_msg);
 		if (env->someone_died)
 			x = 0;
