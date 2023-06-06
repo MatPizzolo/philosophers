@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 06:21:53 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/06 15:29:55 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/06 16:44:54 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,16 +66,16 @@ int	are_philos_full(t_env *env)
 	i = -1;
 	while (++i < env->nbr_philos)
 	{
-		pthread_mutex_lock(env->print_msg);
+		pthread_mutex_lock(env->times_eat_mtx);
 		if (env->philos_struct[i]->times_eaten >= env->times_must_eat)
 			philos_full++;
-		pthread_mutex_unlock(env->print_msg);
+		pthread_mutex_unlock(env->times_eat_mtx);
 		if (philos_full == env->nbr_philos)
 		{
 			printf("\033[32;3m 😋 All philos are full 😋 \033[0m\n");
-			pthread_mutex_lock(env->print_msg);
+			pthread_mutex_lock(env->check_finish);
 			env->finish_dinner = 1;
-			pthread_mutex_unlock(env->print_msg);
+			pthread_mutex_unlock(env->check_finish);
 			return (1);
 		}
 	}
@@ -87,6 +87,8 @@ int	finish_dinner(t_env *env, int argc)
 	int	x;
 
 	x = 1;
+	pthread_mutex_lock(env->start_mtx);
+	pthread_mutex_unlock(env->start_mtx);
 	while (x)
 	{
 		if (argc == 6)
@@ -96,10 +98,10 @@ int	finish_dinner(t_env *env, int argc)
 		}
 		if (a_philo_is_starved(env))
 			x = 0;
-		pthread_mutex_lock(env->print_msg);
+		pthread_mutex_lock(env->check_death);
 		if (env->someone_died)
 			x = 0;
-		pthread_mutex_unlock(env->print_msg);
+		pthread_mutex_unlock(env->check_death);
 	}
 	pthread_mutex_lock(env->print_msg);
 	env->can_print = 0;

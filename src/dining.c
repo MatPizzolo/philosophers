@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 04:30:05 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/06 15:33:27 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/06 16:45:32 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ int	grabbing_forks_eating(t_philo *philo)
 	print_ms_p(philo, "has taken a fork");
 	pthread_mutex_lock(philo->fork_right);
 	print_ms_p(philo, "has taken a fork");
-	pthread_mutex_lock(philo->env->print_msg);
+	pthread_mutex_lock(philo->env->times_eat_mtx);
 	philo->times_eaten++;
 	philo->last_meal = ft_get_time();
-	pthread_mutex_unlock(philo->env->print_msg);
+	pthread_mutex_unlock(philo->env->times_eat_mtx);
 	print_ms_p(philo, "is eating");
 	ft_usleep(philo->env->time_to_eat);
 	pthread_mutex_unlock(philo->fork_right);
@@ -51,18 +51,22 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	pthread_mutex_lock(philo->print_msg);
-	pthread_mutex_unlock(philo->print_msg);
+	pthread_mutex_lock(philo->env->start_mtx);
+	pthread_mutex_unlock(philo->env->start_mtx);
 	if ((philo->id % 2) == 0)
 		usleep(200);
-	pthread_mutex_lock(philo->print_msg);
+	pthread_mutex_lock(philo->env->check_finish);
+	pthread_mutex_lock(philo->env->check_death);
 	while (!philo->env->someone_died && !philo->env->finish_dinner)
 	{
-		pthread_mutex_unlock(philo->print_msg);
+		pthread_mutex_unlock(philo->env->check_death);
+		pthread_mutex_unlock(philo->env->check_finish);
 		if (philo_ations(philo) == 0)
 			break ;
-		pthread_mutex_lock(philo->print_msg);
+		pthread_mutex_lock(philo->env->check_finish);
+		pthread_mutex_lock(philo->env->check_death);
 	}
-	pthread_mutex_unlock(philo->print_msg);
+	pthread_mutex_unlock(philo->env->check_death);
+	pthread_mutex_unlock(philo->env->check_finish);
 	return (NULL);
 }

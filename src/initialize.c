@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 22:19:35 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/06 12:57:23 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/06 16:36:15 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,26 @@ int	initialize_env_mutex(t_env *env, int nbr)
 	if (!env->print_msg)
 		return (0);
 	if (pthread_mutex_init(env->print_msg, NULL) != 0)
+		return (0);
+	env->start_mtx = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	if (!env->start_mtx)
+		return (0);
+	if (pthread_mutex_init(env->start_mtx, NULL) != 0)
+		return (0);
+	env->times_eat_mtx = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	if (!env->times_eat_mtx)
+		return (0);
+	if (pthread_mutex_init(env->times_eat_mtx, NULL) != 0)
+		return (0);
+	env->check_death = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	if (!env->check_death)
+		return (0);
+	if (pthread_mutex_init(env->check_death, NULL) != 0)
+		return (0);
+	env->check_finish = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	if (!env->check_finish)
+		return (0);
+	if (pthread_mutex_init(env->check_finish, NULL) != 0)
 		return (0);
 	env->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * nbr);
 	if (!env->forks)

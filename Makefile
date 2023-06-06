@@ -7,9 +7,9 @@ SRCS = $(SRCS_DIR)/main.c $(SRCS_DIR)/initialize.c $(SRCS_DIR)/utils.c $(SRCS_DI
 OBJS = $(SRCS:.c=.o)
 
 CC = gcc -pthread
-CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror
 
-#LDFLAGS = -g3 -fsanitize=thread
+LDFLAGS = #-g3 -fsanitize=thread
 
 all: $(NAME)
 

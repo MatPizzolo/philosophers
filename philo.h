@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 03:57:52 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/06 12:56:56 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/06 16:35:49 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,10 @@ typedef struct env
 	pthread_t		*philos_threads;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	*print_msg;
+	pthread_mutex_t	*start_mtx;
+	pthread_mutex_t	*times_eat_mtx;
+	pthread_mutex_t	*check_death;
+	pthread_mutex_t	*check_finish;
 	unsigned long	start_time;
 	int				finish_dinner;
 	int				someone_died;

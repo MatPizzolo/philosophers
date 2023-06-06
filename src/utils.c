@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 03:59:40 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/06 15:14:04 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/06 16:49:18 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,28 +16,27 @@ int	is_starved(t_philo *philo)
 {
 	unsigned long	diff_from_last_meal;
 
-	pthread_mutex_lock(philo->env->print_msg);
-	if (philo->env->can_print == 0)
-	{
-		pthread_mutex_unlock(philo->env->print_msg);
-		return (0);
-	}
+	pthread_mutex_lock(philo->env->times_eat_mtx);
 	diff_from_last_meal = ft_get_time() - philo->last_meal;
 	if (diff_from_last_meal > (unsigned long)philo->env->time_to_die)
 	{
+		pthread_mutex_unlock(philo->env->times_eat_mtx);
+		pthread_mutex_lock(philo->env->check_death);
 		philo->env->someone_died = 1;
-		pthread_mutex_unlock(philo->env->print_msg);
 		print_ms_death(philo);
+		pthread_mutex_unlock(philo->env->check_death);
+		pthread_mutex_unlock(philo->env->times_eat_mtx);
 		return (1);
 	}
-	pthread_mutex_unlock(philo->env->print_msg);
+	pthread_mutex_unlock(philo->env->check_death);
+	pthread_mutex_unlock(philo->env->times_eat_mtx);
 	return (0);
 }
 
 void	ft_usleep(int time)
 {
 	unsigned long	reference;
-	
+
 	reference = time + ft_get_time();
 	while (ft_get_time() < reference)
 		usleep(700);
