@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 03:58:40 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/05 09:35:02 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/06 11:11:54 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ int	main(int argc, char *argv[])
 {
 	t_env	env;
 
-	if (argc < 5 || argc > 6)
-		return (printf("Invalid number of arguments\n"), 0);
+	if (!check_args(argc, argv))
+		return (printf("Invalid arguments\n"), 0);
 	if (!vargs_to_env(&env, argv))
 		return (printf("Failed to get argv's\n"), 0);
 	if (!initialize_env_struct(&env))

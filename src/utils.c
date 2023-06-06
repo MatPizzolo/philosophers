@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 03:59:40 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/06 09:47:58 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/06 12:00:11 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ int	is_starved(t_philo *philo)
 	diff_from_last_meal = ft_get_time() - philo->last_meal;
 	if (diff_from_last_meal > (unsigned long)philo->env->time_to_die)
 	{
+		if (philo->env->someone_died || philo->env->finish_dinner)
+		{
+			pthread_mutex_unlock(philo->env->print_msg);
+			return (0);
+		}
 		philo->env->someone_died = 1;
 		pthread_mutex_unlock(philo->env->print_msg);
 		print_ms_p(philo, "\033[1;33mDIED\033[0m");
@@ -53,20 +58,4 @@ unsigned long	ft_get_time(void)
 	time = (unsigned long)tv.tv_sec * 1000
 		+ (unsigned long)tv.tv_usec / 1000;
 	return (time);
-}
-
-void	ft_finish_threads(t_env *env)
-{
-	int	i;
-
-	i = -1;
-	while (++i < env->nbr_philos)
-		pthread_join(env->philos_threads[i], NULL);
-	i = -1;
-	while (++i < env->nbr_philos)
-	{	
-		pthread_mutex_destroy(env->forks + i);
-		pthread_mutex_destroy(env->print_msg + i);
-		pthread_mutex_destroy(env->shield_mtx + i);
-	}
 }

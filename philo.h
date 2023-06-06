@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 03:57:52 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/06 09:34:04 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/06 11:05:36 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ int				ft_atoi(char *str);
 void			ft_usleep(int sleep);
 void			print_ms_p(t_philo *p, char *str);
 unsigned long	ft_get_time(void);
-void			ft_finish_threads(t_env *env);
 int				is_starved(t_philo *philo);
+int				check_args(int argc, char *argv[]);
 
 /* initialize */
 int				initialize_env_struct(t_env *env);

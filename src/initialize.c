@@ -6,11 +6,26 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 22:19:35 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/06 09:10:42 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/06 11:14:59 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
+
+int	check_args(int argc, char *argv[])
+{
+	int		arg;
+
+	if (argc < 5 || argc > 6)
+		return (0);
+	arg = 0;
+	while (++arg < argc)
+	{
+		if (ft_atoi(argv[arg]) <= 0)
+			return (0);
+	}
+	return (1);
+}
 
 int	initialize_philos_struct(t_env *env)
 {
