@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 03:59:40 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/06 16:49:18 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/06 18:19:45 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	print_ms_death(t_philo *p)
 	pthread_mutex_lock(p->print_msg);
 	if (p->env->can_print)
 	{
-		printf("%lu - %i, ", time, p->id);
+		printf("%lu %i ", time, p->id);
 		printf("\033[31;3m 💀 DIED 💀 \033[0m\n");
 	}
 	pthread_mutex_unlock(p->print_msg);
@@ -63,7 +63,7 @@ void	print_ms_p(t_philo *p, char *str)
 	time = ft_get_time() - p->env->start_time;
 	pthread_mutex_lock(p->print_msg);
 	if (p->env->can_print)
-		printf("%lu - %i, %s\n", time, p->id, str);
+		printf("%lu %i %s\n", time, p->id, str);
 	pthread_mutex_unlock(p->print_msg);
 }
 
