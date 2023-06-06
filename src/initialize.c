@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 22:19:35 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/06 16:36:15 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/06 17:01:12 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,25 @@ int	initialize_philos_struct(t_env *env)
 	return (1);
 }
 
-int	initialize_env_mutex(t_env *env, int nbr)
+int	initialize_more_mutex(t_env *env, int nbr)
+{
+	env->check_death = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	if (!env->check_death)
+		return (0);
+	if (pthread_mutex_init(env->check_death, NULL) != 0)
+		return (0);
+	env->check_finish = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	if (!env->check_finish)
+		return (0);
+	if (pthread_mutex_init(env->check_finish, NULL) != 0)
+		return (0);
+	env->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * nbr);
+	if (!env->forks)
+		return (0);
+	return (1);
+}
+
+int	initialize_env_mutex(t_env *env)
 {
 	env->print_msg = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	if (!env->print_msg)
@@ -64,19 +82,6 @@ int	initialize_env_mutex(t_env *env, int nbr)
 	if (!env->times_eat_mtx)
 		return (0);
 	if (pthread_mutex_init(env->times_eat_mtx, NULL) != 0)
-		return (0);
-	env->check_death = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-	if (!env->check_death)
-		return (0);
-	if (pthread_mutex_init(env->check_death, NULL) != 0)
-		return (0);
-	env->check_finish = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-	if (!env->check_finish)
-		return (0);
-	if (pthread_mutex_init(env->check_finish, NULL) != 0)
-		return (0);
-	env->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * nbr);
-	if (!env->forks)
 		return (0);
 	return (1);
 }
@@ -104,18 +109,7 @@ int	initialize_env_struct(t_env *env)
 	env->philos_threads = (pthread_t *)malloc(sizeof(pthread_t) * nbr);
 	if (!env->philos_threads)
 		return (0);
-	if (!initialize_env_mutex(env, nbr))
+	if (!initialize_env_mutex(env) || !initialize_more_mutex(env, nbr))
 		return (0);
-	return (1);
-}
-
-int	vargs_to_env(t_env *env, char **argv)
-{
-	env->nbr_philos = ft_atoi(argv[1]);
-	env->time_to_die = ft_atoi(argv[2]);
-	env->time_to_eat = ft_atoi(argv[3]);
-	env->time_to_sleep = ft_atoi(argv[4]);
-	if (argv[5])
-		env->times_must_eat = ft_atoi(argv[5]);
 	return (1);
 }

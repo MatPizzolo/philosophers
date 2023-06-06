@@ -6,11 +6,28 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 06:21:53 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/06 16:44:54 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/06 17:04:50 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
+
+void	free_env(t_env *env)
+{
+	int	i;
+
+	i = -1;
+	while (++i < env->nbr_philos)
+		free(env->philos_struct[i]);
+	free(env->forks);
+	free(env->print_msg);
+	free(env->start_mtx);
+	free(env->times_eat_mtx);
+	free(env->check_death);
+	free(env->check_finish);
+	free(env->philos_threads);
+	free(env->philos_struct);
+}
 
 void	ft_finish_threads(t_env *env)
 {
@@ -28,15 +45,11 @@ void	ft_finish_threads(t_env *env)
 		pthread_mutex_destroy(env->forks + i);
 		pthread_mutex_destroy(env->print_msg + i);
 	}
-	i = -1;
-	while (++i < env->nbr_philos)
-	{	
-		free(env->philos_struct[i]);
-	}
-	free(env->forks);
-	free(env->print_msg);
-	free(env->philos_threads);
-	free(env->philos_struct);
+	pthread_mutex_destroy(env->start_mtx);
+	pthread_mutex_destroy(env->times_eat_mtx);
+	pthread_mutex_destroy(env->check_death);
+	pthread_mutex_destroy(env->check_finish);
+	free_env(env);
 }
 
 int	a_philo_is_starved(t_env *env)

@@ -9,12 +9,10 @@ OBJS = $(SRCS:.c=.o)
 CC = gcc -pthread
 CFLAGS = -Wall -Wextra -Werror
 
-LDFLAGS = #-g3 -fsanitize=thread
-
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME) 
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) 
 
 %.o: %.c 
 	$(CC) $(CFLAGS) -c $< -o $@

@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 03:58:40 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/06 16:42:25 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/06 17:13:23 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,19 @@ int	start_dinner(t_env *env)
 		if (pthread_create(philo_thread, NULL, routine, philo_struct) != 0)
 			return (printf("Failed when creating a thread\n"), 0);
 	}
+	env->start_time = ft_get_time();
 	pthread_mutex_unlock(env->start_mtx);
 	return (1);
+}
+
+void	vargs_to_env(t_env *env, char **argv)
+{
+	env->nbr_philos = ft_atoi(argv[1]);
+	env->time_to_die = ft_atoi(argv[2]);
+	env->time_to_eat = ft_atoi(argv[3]);
+	env->time_to_sleep = ft_atoi(argv[4]);
+	if (argv[5])
+		env->times_must_eat = ft_atoi(argv[5]);
 }
 
 int	main(int argc, char *argv[])
@@ -39,8 +50,7 @@ int	main(int argc, char *argv[])
 
 	if (!check_args(argc, argv))
 		return (printf("Invalid arguments\n"), 0);
-	if (!vargs_to_env(&env, argv))
-		return (printf("Failed to get argv's\n"), 0);
+	vargs_to_env(&env, argv);
 	if (!initialize_env_struct(&env))
 		return (printf("Failed to initialize env struct\n"), 0);
 	if (!initialize_philos_struct(&env))

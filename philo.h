@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 03:57:52 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/06 16:35:49 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/06 16:57:57 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void			print_ms_death(t_philo *p);
 int				check_args(int argc, char *argv[]);
 int				initialize_env_struct(t_env *env);
 int				initialize_philos_struct(t_env *env);
-int				vargs_to_env(t_env *env, char **argv);
 
 /* dining.c */
 void			*routine(void *arg);
