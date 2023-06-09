@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 04:30:05 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/08 11:41:58 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/08 17:21:00 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	*routine(void *arg)
 	pthread_mutex_lock(philo->env->start_mtx);
 	pthread_mutex_unlock(philo->env->start_mtx);
 	if ((philo->id % 2) == 0)
-		usleep(200);
+		usleep(philo->env->time_to_eat * 500);
 	pthread_mutex_lock(philo->check_finish);
 	while (!philo->env->finish_dinner)
 	{

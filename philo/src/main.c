@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 03:58:40 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/08 11:57:31 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/08 15:51:31 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,14 @@ int	main(int argc, char *argv[])
 	t_env	env;
 
 	if (!check_args(argc, argv))
-		return (printf("Invalid arguments\n"), 0);
+		return (printf("Invalid arguments\n"), 1);
 	vargs_to_env(&env, argv);
 	if (!initialize_env_struct(&env))
-		return (printf("Failed to initialize env struct\n"), 0);
+		return (printf("Failed to initialize env struct\n"), 2);
 	if (!initialize_philos_struct(&env))
-		return (printf("Failed to initialize philos struct\n"), 0);
+		return (printf("Failed to initialize philos struct\n"), 3);
 	if (!start_dinner(&env))
-		return (printf("Failed to start dinner\n"), 0);
+		return (printf("Failed to start dinner\n"), 4);
 	if (!finish_dinner(&env, argc))
 		return (0);
 	return (0);

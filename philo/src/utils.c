@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 03:59:40 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/08 12:08:57 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/08 17:20:09 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,12 @@ void	print_ms_p(t_philo *p, char *str)
 {
 	unsigned long	time;
 
-	time = ft_get_time() - p->env->start_time;
 	pthread_mutex_lock(p->print_msg);
 	if (p->env->can_print)
+	{	
+		time = ft_get_time() - p->env->start_time;
 		printf("%lu %i %s\n", time, p->id, str);
+	}
 	pthread_mutex_unlock(p->print_msg);
 }
 
