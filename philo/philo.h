@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 03:57:52 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/08 11:43:21 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/10 14:12:49 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,6 @@ int				initialize_philos_struct(t_env *env);
 void			*routine(void *arg);
 
 /* finish_dinner.c */
-int				finish_dinner(t_env *env, int argc);
+void			finish_dinner(t_env *env, int argc);
 
 #endif

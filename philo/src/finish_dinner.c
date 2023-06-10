@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 06:21:53 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/10 14:10:55 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/10 14:12:42 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	are_philos_full(t_env *env)
 	return (0);
 }
 
-int	finish_dinner(t_env *env, int argc)
+void	finish_dinner(t_env *env, int argc)
 {
 	int	x;
 
@@ -117,5 +117,4 @@ int	finish_dinner(t_env *env, int argc)
 			x = 0;
 	}
 	ft_finish_threads(env);
-	return (0);
 }
