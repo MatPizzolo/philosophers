@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 22:19:35 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/08 11:44:53 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/10 13:57:46 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	initialize_more_mutex(t_env *env, int nbr)
 	return (1);
 }
 
-int	initialize_env_mutex(t_env *env, int nbr)
+int	initialize_env_mutex(t_env *env, int n)
 {
 	env->print_msg = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	if (!env->print_msg)
@@ -77,7 +77,7 @@ int	initialize_env_mutex(t_env *env, int nbr)
 		return (0);
 	if (pthread_mutex_init(env->start_mtx, NULL) != 0)
 		return (0);
-	env->times_eat_mtx = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * nbr);
+	env->times_eat_mtx = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * n);
 	if (!env->times_eat_mtx)
 		return (0);
 	return (1);

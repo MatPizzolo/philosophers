@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 03:59:40 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/08 17:20:09 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/10 13:55:32 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ void	print_ms_death(t_philo *p)
 	unsigned long	time;
 
 	time = ft_get_time() - p->env->start_time;
-	if (pthread_mutex_lock(p->print_msg) != 0)
-		return ;
+	pthread_mutex_lock(p->print_msg);
 	if (p->env->can_print)
 	{
 		printf("%lu %i ", time, p->id);

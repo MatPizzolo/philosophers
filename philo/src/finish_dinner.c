@@ -6,7 +6,7 @@
 /*   By: mpizzolo <mpizzolo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 06:21:53 by mpizzolo          #+#    #+#             */
-/*   Updated: 2023/06/08 12:10:01 by mpizzolo         ###   ########.fr       */
+/*   Updated: 2023/06/10 14:10:55 by mpizzolo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,11 @@ int	are_philos_full(t_env *env)
 			pthread_mutex_lock(env->check_finish);
 			env->finish_dinner = 1;
 			pthread_mutex_unlock(env->check_finish);
-			printf("\033[32;3m 😋 All philos are full 😋 \033[0m\n");
+			pthread_mutex_lock(env->print_msg);
+			if (env->can_print)
+				printf("\033[32;3m 😋 All philos are full 😋 \033[0m\n");
+			env->can_print = 0;
+			pthread_mutex_unlock(env->print_msg);
 			return (1);
 		}
 	}
@@ -112,9 +116,6 @@ int	finish_dinner(t_env *env, int argc)
 		if (a_philo_is_starved(env))
 			x = 0;
 	}
-	pthread_mutex_lock(env->print_msg);
-	env->can_print = 0;
-	pthread_mutex_unlock(env->print_msg);
 	ft_finish_threads(env);
 	return (0);
 }

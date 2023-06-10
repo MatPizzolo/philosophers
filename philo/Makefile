@@ -1,5 +1,4 @@
 NAME = philo
-NAME_DEBUG = philo_debug
 
 SRCS_DIR = ./src
 
@@ -11,10 +10,6 @@ CC = gcc -pthread
 CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=thread
 
 all: $(NAME)
-
-VS_debug: $(NAME_DEBUG)
-$(NAME_DEBUG): $(SRCS)
-	$(CC) $(CFLAGS) -fdiagnostics-color=always -g $(SRCS) -o $@
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) 
