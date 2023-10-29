@@ -2,7 +2,7 @@
 
 This project is a version of the [Dining Philosophers Problem](https://en.wikipedia.org/wiki/Dining_philosophers_problem).
 
-The goal of this project was to learn to avoid deadlock and race conditions when creating multithreaded applications.
+Solving the Dining Philosopher problem dealing with deadlock and race conditions in multithreaded applications.
 
 ### Rules
 The program takes the following arguments:
