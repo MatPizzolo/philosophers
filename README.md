@@ -30,8 +30,23 @@ Each philosopher logs the following actions:
 
 The logged messages are always in sequential order.
 
-## Installation
-The program is compiled into a `philo` executable using `make all`
+
+## Installation & Usage
+
+Clone this repository to your computer:
+```sh
+git clone https://github.com/MatPizzolo/philosophers.git
+```
+
+First compile and install library
+```sh
+cd philo && make
+```
+
+Run 
+```sh
+./philo <number_of_philosophers> <time_to_die> <time_to_eat> <time_to_sleep> [number_of_times_each_philosopher_must_eat]
+```
 
 ## Example usage
 The following example shows the result of 5 philosophers, that take 800ms to die, 200ms to eat, 200ms to sleep and will eat a minimum of 3 times (`./philo 5 800 200 200 3`):
